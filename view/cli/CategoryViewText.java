@@ -51,7 +51,7 @@ public final class CategoryViewText implements CategoryView {
         }
     }
 
-
+    /** Shows all existing categories **/
     private void listCategories() {
         List<Category> categories = categoryController.listAll();
         if (categories.isEmpty()) {
@@ -64,6 +64,7 @@ public final class CategoryViewText implements CategoryView {
         }
     }
 
+    /** Category creation **/
     private void createCategory() {
         System.out.print("Nome da categoria: ");
         String name = scanner.nextLine().trim();
@@ -71,6 +72,7 @@ public final class CategoryViewText implements CategoryView {
         System.out.println("Categoria criada: " + c);
     }
 
+    /** Category edition **/
     private void editCategory() {
         System.out.print("ID da categoria: ");
         int id = parseIntInput();
@@ -92,6 +94,7 @@ public final class CategoryViewText implements CategoryView {
         }
     }
 
+    /** Removes a category **/
     private void removeCategory() {
         System.out.print("ID da categoria: ");
         int id = parseIntInput();
@@ -100,6 +103,7 @@ public final class CategoryViewText implements CategoryView {
         System.out.println(ok ? "Removida." : "Não encontrada.");
     }
 
+    /** adds book to a category **/
     private void addBookToCategory() {
         System.out.print("ID da categoria: ");
         int catId = parseIntInput();
@@ -115,6 +119,7 @@ public final class CategoryViewText implements CategoryView {
         System.out.println(added ? "Livro adicionado à categoria." : "Falha ou já adicionado.");
     }
 
+    /** Removes book from a category **/
     private void removeBookFromCategory() {
         System.out.print("ID da categoria: ");
         int catId = parseIntInput();
@@ -130,6 +135,7 @@ public final class CategoryViewText implements CategoryView {
         System.out.println(removed ? "Livro removido da categoria." : "Falha ao remover.");
     }
 
+    /** Lists the books in a category **/
     private void listBooksOfCategory() {
         System.out.print("ID da categoria: ");
         int id = parseIntInput();
@@ -149,6 +155,7 @@ public final class CategoryViewText implements CategoryView {
         }
     }
 
+    /** private method that gets a valid input **/
     private int parseIntInput() {
         try {
             return Integer.parseInt(scanner.nextLine());
@@ -158,6 +165,7 @@ public final class CategoryViewText implements CategoryView {
         }
     }
 
+    /** private methods that finds the supercategory of a subcategory **/
     private Category findParent() {
         System.out.print("ID da categoria pai: ");
         int parentId = parseIntInput();
@@ -166,6 +174,7 @@ public final class CategoryViewText implements CategoryView {
         return parent;
     }
 
+    /** adds a subcategory to a parent category **/
     private void addSubCategory() {
         Category parent = findParent();
         if (parent==null) return;
@@ -175,6 +184,7 @@ public final class CategoryViewText implements CategoryView {
         System.out.println(added ? "Subcategoria adicionada." : "Falha ao adicionar subcategoria.");
     }
 
+    /** removes a subcategory **/
     private void removeSubCategory() {
         Category parent = findParent();
         if (parent==null) return;
@@ -185,6 +195,7 @@ public final class CategoryViewText implements CategoryView {
         System.out.println(removed ? "Subcategoria removida." : "Falha ao remover subcategoria.");
     }
 
+    /** lists the subcategories of a supercategory **/
     private void listSubCategories() {
         Category cat = findParent();
         if (cat==null) return;

@@ -16,6 +16,7 @@ public final class MainViewText implements MainView {
     private final ShelfViewText shelfViewText;
     private final AppController appController;
 
+    /** Constructor acts as a receiver for all necessary sub-views, it is an access class **/
     public MainViewText(BookViewText bookView, CategoryViewText categoryView, UserViewText userView,
                         ReviewViewText reviewView, ShelfViewText shelfViewText, AppController appController) {
         this.bookView = bookView;

@@ -121,8 +121,9 @@ public final class ShelfViewText implements ShelfView, UserObserver {
         }
     }
 
+    /** Adding new books to a shelf via its id;
+     * @param shelfId is used to access it**/
     private void addBookToThisShelf(int shelfId) {
-        // Listar todos os livros disponíveis no sistema
         System.out.println("\nLivros disponíveis no sistema:");
         var allBooks = bookController.listAll();
         if (allBooks.isEmpty()) {
@@ -150,6 +151,7 @@ public final class ShelfViewText implements ShelfView, UserObserver {
         System.out.println("Livro adicionado.");
     }
 
+    /** Also accessing via id, it removes a book from the shelf **/
     private void removeBookFromThisShelf(int shelfId) {
         System.out.print("Digite o ID do Livro para REMOVER (da lista acima): ");
         int bookId;

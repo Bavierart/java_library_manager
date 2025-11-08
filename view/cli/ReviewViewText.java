@@ -41,6 +41,7 @@ public final class ReviewViewText implements ReviewView, UserObserver {
         }
     }
 
+    /** Intermediate method for book selection **/
     private void selectBook() {
         System.out.print("Digite o ID do livro: ");
         try {
@@ -57,11 +58,13 @@ public final class ReviewViewText implements ReviewView, UserObserver {
         }
     }
 
+    /** Shows textual representation of all book reviews **/
     private void listReviews() {
         if (!ensureBookSelected()) return;
         ReviewController.listAll(currentBook);
     }
 
+    /** Review creation **/
     private void createReview() {
         if (!ensureBookSelected()) return;
         if (user == null) {
@@ -86,6 +89,7 @@ public final class ReviewViewText implements ReviewView, UserObserver {
             System.out.println("Review criada: " + r);
     }
 
+    /** Review editing **/
     private void editReview() {
         if (!ensureBookSelected()) return;
         User user = ReviewController.getUser();
@@ -139,6 +143,7 @@ public final class ReviewViewText implements ReviewView, UserObserver {
         System.out.println("Review atualizada!");
     }
 
+    /** Review removal **/
     private void removeReview() {
         if (!ensureBookSelected()) return;
         User user = ReviewController.getUser();
@@ -174,6 +179,7 @@ public final class ReviewViewText implements ReviewView, UserObserver {
         }
     }
 
+    /** private method ensuring that the book is selected **/
     private boolean ensureBookSelected() {
         if (currentBook == null) {
             System.out.println("Nenhum livro selecionado. Use a opção 1 primeiro.");

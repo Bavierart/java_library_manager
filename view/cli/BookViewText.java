@@ -34,6 +34,7 @@ public final class BookViewText implements BookView {
         }
     }
 
+    /** gets the list of all books  **/
     private void list() {
         List<Book> books = bookController.listAll();
         if (books.isEmpty()) { System.out.println("Nenhum livro."); return; }
@@ -44,6 +45,7 @@ public final class BookViewText implements BookView {
         }
     }
 
+    /** creates a book **/
     private void create() {
         System.out.print("Nome: ");
         String name = scanner.nextLine();
@@ -70,6 +72,7 @@ public final class BookViewText implements BookView {
         System.out.println("Criado: " + b);
     }
 
+    /** edits a book **/
     private void edit() {
         System.out.print("ID do livro: ");
         int id;
@@ -110,6 +113,7 @@ public final class BookViewText implements BookView {
         System.out.println("Atualizado.");
     }
 
+    /** removes a book **/
     private void remove() {
         System.out.print("ID do livro: ");
         int id;

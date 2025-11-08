@@ -40,6 +40,7 @@ public final class UserViewText implements UserView {
         }
     }
 
+    /** User creation logic **/
     private void register() {
         System.out.print("Nome de usuário: ");
         String name = scanner.nextLine().trim();
@@ -55,6 +56,7 @@ public final class UserViewText implements UserView {
         System.out.println("Usuário criado com sucesso!");
     }
 
+    /** Access to user options and observer notification trigger **/
     private void login() {
         if (appController.getUser() != null) {
             System.out.println("Já há um usuário logado. Faça logout antes.");
@@ -76,6 +78,7 @@ public final class UserViewText implements UserView {
         }
     }
 
+    /** Losing access to user options (automatic observer trigger) **/
     private void logout() {
         if (appController.getUser() == null) {
             System.out.println("Nenhum usuário logado.");
