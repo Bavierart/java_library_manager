@@ -17,14 +17,12 @@ public final class ShelfViewGui extends JDialog implements ShelfView, UserObserv
 
     private User user = shelfController.getUser();
 
-    // Componentes principais
     private final DefaultListModel<Shelf> shelfListModel = new DefaultListModel<>();
     private final JList<Shelf> shelfList = new JList<>(shelfListModel);
 
     private final DefaultListModel<Book> bookListModel = new DefaultListModel<>();
     private final JList<Book> bookList = new JList<>(bookListModel);
 
-    // Botões
     private final JButton createButton = new JButton("Criar Estante");
     private final JButton removeButton = new JButton("Remover Estante");
     private final JButton addBookButton = new JButton("Adicionar Livro");
@@ -38,13 +36,11 @@ public final class ShelfViewGui extends JDialog implements ShelfView, UserObserv
         setModal(true);
         setLayout(new BorderLayout(10, 10));
 
-        // --- Painel Superior ---
         JLabel headerLabel = new JLabel("Usuário: " + (user != null ? user.getUsername() : "Nenhum"));
         headerLabel.setFont(new Font("Arial", Font.BOLD, 14));
         headerLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         add(headerLabel, BorderLayout.NORTH);
 
-        // --- Painel Central (dividido) ---
         JPanel leftPanel = new JPanel(new BorderLayout(5, 5));
         leftPanel.setBorder(BorderFactory.createTitledBorder("Estantes"));
         shelfList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -61,7 +57,6 @@ public final class ShelfViewGui extends JDialog implements ShelfView, UserObserv
         splitPane.setResizeWeight(0.4);
         add(splitPane, BorderLayout.CENTER);
 
-        // --- Painel de Botões ---
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(createButton);
         buttonPanel.add(removeButton);
@@ -70,7 +65,6 @@ public final class ShelfViewGui extends JDialog implements ShelfView, UserObserv
         buttonPanel.add(closeButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // --- Ações ---
         shelfList.addListSelectionListener(e -> updateBookList());
         createButton.addActionListener(e -> createShelf());
         removeButton.addActionListener(e -> removeShelf());
@@ -80,8 +74,6 @@ public final class ShelfViewGui extends JDialog implements ShelfView, UserObserv
 
         refreshShelfList();
     }
-
-    // === Métodos principais ===
 
     private void refreshShelfList() {
         shelfListModel.clear();
@@ -138,7 +130,7 @@ public final class ShelfViewGui extends JDialog implements ShelfView, UserObserv
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 allBooks.toArray(),
-                allBooks.get(0));
+                allBooks.getFirst());
 
         if (selectedBook != null) {
             shelfController.addBook(selectedShelf.getId(), selectedBook);
@@ -165,7 +157,6 @@ public final class ShelfViewGui extends JDialog implements ShelfView, UserObserv
         }
     }
 
-    // === Renderizadores personalizados ===
 
     private static class ShelfListRenderer extends DefaultListCellRenderer {
         @Override
@@ -189,7 +180,6 @@ public final class ShelfViewGui extends JDialog implements ShelfView, UserObserv
         }
     }
 
-    // === Métodos de interface ===
 
     @Override
     public void onUserChanged(User newUser) {

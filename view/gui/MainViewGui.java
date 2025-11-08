@@ -41,7 +41,6 @@ public final class MainViewGui extends JFrame implements MainView, UserObserver 
     public MainViewGui(BookView bookView, CategoryView categoryView, UserView userView,
                        ReviewView reviewView, ShelfView shelfView, AppController appController) {
 
-        // Armazena as dependências
         this.bookView = bookView;
         this.categoryView = categoryView;
         this.userView = userView;
@@ -49,24 +48,19 @@ public final class MainViewGui extends JFrame implements MainView, UserObserver 
         this.shelfView = shelfView;
         this.appController = appController;
 
-        // Configuração da janela principal
         setTitle("Biblioteca GUI");
         setSize(400, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 'X' encerra a app
         setLocationRelativeTo(null); // Centraliza
         setLayout(new BorderLayout(10, 10));
 
-        // --- Painel de Status (Norte) ---
-        // Exibe o usuário logado
         statusLabel = new JLabel("Nenhum usuário logado.", SwingConstants.CENTER);
         statusLabel.setFont(new Font("Arial", Font.BOLD, 14));
         add(statusLabel, BorderLayout.NORTH);
 
-        // --- Painel de Botões (Centro) ---
         JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 10, 10)); // 1 coluna
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // Botões do menu
         userButton = new JButton("Usuários");
         bookButton = new JButton("Livros");
         categoryButton = new JButton("Categorias");
@@ -76,7 +70,6 @@ public final class MainViewGui extends JFrame implements MainView, UserObserver 
         loadButton = new JButton("Carregar estado");
         logoutButton = new JButton("Logout");
 
-        // Adiciona os botões ao painel
         buttonPanel.add(userButton);
         buttonPanel.add(bookButton);
         buttonPanel.add(categoryButton);
@@ -87,9 +80,6 @@ public final class MainViewGui extends JFrame implements MainView, UserObserver 
         buttonPanel.add(logoutButton);
 
         add(buttonPanel, BorderLayout.CENTER);
-
-        // --- Configura Ações (ActionListeners) ---
-        // Substitui o switch-case
 
         // 1) Usuários
         userButton.addActionListener(e -> userView.setVisible(true)); // (case "1")
@@ -118,16 +108,13 @@ public final class MainViewGui extends JFrame implements MainView, UserObserver 
             appController.loadAll();
             JOptionPane.showMessageDialog(this,
                     "Estado carregado", "Carregado", JOptionPane.INFORMATION_MESSAGE); //
-            // A notificação do observador (onUserChanged) cuidará de atualizar o status.
         });
 
         // 0) Logout
         logoutButton.addActionListener(e -> { // (case "0")
             appController.setUser(null);
-            // A notificação do observador (onUserChanged) cuidará de atualizar o status.
         });
 
-        // Atualiza o estado inicial
         updateUserStatus(appController.getUser());
     }
 
@@ -144,41 +131,30 @@ public final class MainViewGui extends JFrame implements MainView, UserObserver 
             statusLabel.setText("Nenhum usuário logado."); //
         }
 
-        // Acesso negado às estantes se não logado
-        // E para reviews, livros, categorias (implícito pela lógica do menu)
         bookButton.setEnabled(isLoggedIn);
         categoryButton.setEnabled(isLoggedIn);
         reviewButton.setEnabled(isLoggedIn);
         shelfButton.setEnabled(isLoggedIn);
         logoutButton.setEnabled(isLoggedIn);
 
-        // Salvar/Carregar pode ser permitido, mas vamos manter
-        // a lógica de que precisa estar logado para salvar.
         saveButton.setEnabled(isLoggedIn);
 
-        // Login/Registro (UserView) e Carregar devem estar sempre disponíveis
         userButton.setEnabled(true);
         loadButton.setEnabled(true);
     }
 
-    // --- Implementação da interface MainView ---
-
     @Override
     public void showMenu() {
-        // Em Swing, showMenu é o mesmo que setVisible(true)
         setVisible(true); //
     }
 
     @Override
     public void setVisible(boolean visible) {
         if (visible) {
-            // Atualiza o status toda vez que a janela for exibida
-            updateUserStatus(appController.getUser()); // (lógica do loop)
+            updateUserStatus(appController.getUser());
         }
         super.setVisible(visible); //
     }
-
-    // --- Implementação da interface UserObserver ---
 
     /**
      * Este método é chamado pelo AppController quando o usuário

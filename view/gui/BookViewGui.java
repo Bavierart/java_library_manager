@@ -33,11 +33,9 @@ public final class BookViewGui extends JDialog implements BookView {
         setModal(true);
         setLayout(new BorderLayout(10, 10));
 
-        // --- Painel Esquerdo: Árvore de Livros ---
         bookTree.setRootVisible(true);
         JScrollPane treeScroll = new JScrollPane(bookTree);
 
-        // --- Painel Direito: Detalhes do Livro ---
         detailArea.setEditable(false);
         detailArea.setBorder(BorderFactory.createTitledBorder("Detalhes do Livro"));
         JScrollPane detailScroll = new JScrollPane(detailArea);
@@ -46,7 +44,6 @@ public final class BookViewGui extends JDialog implements BookView {
         split.setDividerLocation(300);
         add(split, BorderLayout.CENTER);
 
-        // --- Painel de Botões ---
         JPanel buttonPanel = new JPanel(new GridLayout(2, 3, 5, 5));
         JButton refreshBtn = new JButton("Listar/Atualizar");
         JButton createBtn = new JButton("Criar Livro");
@@ -63,7 +60,6 @@ public final class BookViewGui extends JDialog implements BookView {
         buttonPanel.add(closeBtn);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // --- Ações dos botões ---
         refreshBtn.addActionListener(e -> populateTree());
         createBtn.addActionListener(e -> createBook());
         editBtn.addActionListener(e -> editBook());
@@ -71,7 +67,6 @@ public final class BookViewGui extends JDialog implements BookView {
         rankBtn.addActionListener(e -> showScore());
         closeBtn.addActionListener(e -> setVisible(false));
 
-        // --- Ação de seleção na árvore ---
         bookTree.addTreeSelectionListener(this::showSelectedBookDetails);
         bookTree.setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
             JLabel label = new JLabel();

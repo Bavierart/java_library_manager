@@ -29,13 +29,11 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
     private User user = reviewController.getUser();
     private Book currentBook;
 
-    // Componentes principais
     private final DefaultListModel<Review> listModel = new DefaultListModel<>();
     private final JList<Review> reviewList = new JList<>(listModel);
     private final JTextArea detailArea = new JTextArea();
     private final JLabel bookStatusLabel;
 
-    // Botões
     private final JButton createButton;
     private final JButton editButton;
     private final JButton removeButton;
@@ -50,7 +48,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
         setModal(true);
         setLayout(new BorderLayout(10, 10));
 
-        // --- Top: status do livro + botão selecionar ---
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
         bookStatusLabel = new JLabel("Nenhum livro selecionado.");
@@ -61,10 +58,8 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
         topPanel.add(selectBookButton, BorderLayout.EAST);
         add(topPanel, BorderLayout.NORTH);
 
-        // --- Left: JList de reviews dentro de JScrollPane ---
         reviewList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         reviewList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-            // Renderer simples: mostra id, rank e autor (se disponível)
             String text;
             if (value == null) {
                 text = "(nulo)";
@@ -91,17 +86,14 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
         listScroll.setBorder(BorderFactory.createTitledBorder("Reviews"));
         listScroll.setPreferredSize(new Dimension(320, 400));
 
-        // --- Right: detalhes da review selecionada ---
         detailArea.setEditable(false);
         detailArea.setBorder(BorderFactory.createTitledBorder("Detalhes da Review"));
         JScrollPane detailScroll = new JScrollPane(detailArea);
 
-        // --- Split pane ---
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, listScroll, detailScroll);
         splitPane.setDividerLocation(320);
         add(splitPane, BorderLayout.CENTER);
 
-        // --- Bottom: botões em grade (estilo CategoryViewGui) ---
         JPanel buttonPanel = new JPanel(new GridLayout(2, 4, 5, 5));
         refreshButton = new JButton("Listar/Atualizar");
         JButton listButton = new JButton("Listar (texto)");
@@ -111,20 +103,17 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
         JButton showAllButton = new JButton("Mostrar todas as Reviews do Livro");
         closeButton = new JButton("Voltar");
 
-        // Preencher grade (mantendo espaço caso queira adicionar botões depois)
         buttonPanel.add(refreshButton);
         buttonPanel.add(listButton);
         buttonPanel.add(createButton);
         buttonPanel.add(editButton);
         buttonPanel.add(removeButton);
         buttonPanel.add(showAllButton);
-        // duas células vazias para completar grid 2x4
         buttonPanel.add(new JLabel());
         buttonPanel.add(closeButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // --- Ações ---
         selectBookButton.addActionListener(e -> selectBook());
         refreshButton.addActionListener(e -> populateReviewList());
         listButton.addActionListener(e -> listReviewsAsText());
@@ -134,7 +123,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
         showAllButton.addActionListener(e -> listReviewsAsText());
         closeButton.addActionListener(e -> setVisible(false));
 
-        // --- Listener de seleção na JList ---
         reviewList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -151,7 +139,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
     private void updateButtonState() {
         boolean bookSelected = (currentBook != null);
         boolean userLogged = (user != null);
-        // criar/editar/remover exigem livro selecionado e usuário logado
         createButton.setEnabled(bookSelected && userLogged);
         editButton.setEnabled(bookSelected && userLogged);
         removeButton.setEnabled(bookSelected && userLogged);
@@ -197,13 +184,12 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
         listModel.clear();
         detailArea.setText("");
         if (currentBook == null) {
-            listModel.addElement(null); // não ideal, mas evita vazio total; renderer trata nulo
+            listModel.addElement(null);
             return;
         }
 
         List<Review> reviews = currentBook.getReviews();
         if (reviews == null || reviews.isEmpty()) {
-            // mostra mensagem no detailArea
             detailArea.setText("Nenhuma review neste livro.");
             return;
         }
@@ -211,7 +197,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
         for (Review r : reviews) {
             listModel.addElement(r);
         }
-        // Seleciona o primeiro item por padrão
         if (!listModel.isEmpty()) {
             reviewList.setSelectedIndex(0);
         }
@@ -322,7 +307,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
 
         Review target = getSelectedReview();
         if (target == null) {
-            // fallback: pedir ID
             String idStr = JOptionPane.showInputDialog(this, "ID da review para editar:", "Editar Review", JOptionPane.QUESTION_MESSAGE);
             if (idStr == null) return;
             try {
@@ -338,7 +322,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
             }
         }
 
-        // verifica autoria
         if (target.getAuthor() == null || user.getUsername() == null || !user.getUsername().equals(target.getAuthor().getUsername())) {
             JOptionPane.showMessageDialog(this, "Você só pode editar suas próprias reviews.", "Acesso Negado", JOptionPane.ERROR_MESSAGE);
             return;
@@ -361,7 +344,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
         try {
             newRank = Double.parseDouble(rankField.getText());
         } catch (NumberFormatException ex) {
-            // se inválido, manter null (controller decide)
             newRank = null;
         }
 
@@ -396,7 +378,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
             }
         }
 
-        // verifica autoria
         if (target.getAuthor() == null || user.getUsername() == null || !user.getUsername().equals(target.getAuthor().getUsername())) {
             JOptionPane.showMessageDialog(this, "Você só pode remover suas próprias reviews.", "Acesso Negado", JOptionPane.ERROR_MESSAGE);
             return;
@@ -426,7 +407,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
         }
     }
 
-    // --- Implementação UserObserver ---
     @Override
     public void onUserChanged(User newUser) {
         this.user = newUser;
@@ -438,7 +418,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
         return user;
     }
 
-    // --- Implementação ReviewView ---
     @Override
     public void showMenu() {
         setVisible(true);
@@ -447,7 +426,6 @@ public final class ReviewViewGui extends JDialog implements ReviewView, UserObse
     @Override
     public void setVisible(boolean visible) {
         if (visible) {
-            // Sempre atualizar estado ao abrir
             updateButtonState();
             if (currentBook != null) populateReviewList();
         }

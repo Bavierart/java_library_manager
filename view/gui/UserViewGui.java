@@ -25,17 +25,15 @@ public final class UserViewGui extends JDialog implements UserView {
     public UserViewGui() {
         setTitle("Usuários");
         setSize(350, 250);
-        setLocationRelativeTo(null); // Centralizar
+        setLocationRelativeTo(null);
         setModal(true);
         setLayout(new BorderLayout(10, 10));
 
-        // --- Status (Norte) ---
         statusLabel = new JLabel("Nenhum usuário logado.", SwingConstants.CENTER);
         statusLabel.setFont(new Font("Arial", Font.BOLD, 14));
         statusLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(statusLabel, BorderLayout.NORTH);
 
-        // --- Botões (Centro) ---
         JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 10, 10));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
@@ -49,7 +47,6 @@ public final class UserViewGui extends JDialog implements UserView {
 
         add(buttonPanel, BorderLayout.CENTER);
 
-        // --- Ações dos Botões ---
         registerButton.addActionListener(e -> register());
         loginButton.addActionListener(e -> login());
         logoutButton.addActionListener(e -> logout());
@@ -79,7 +76,6 @@ public final class UserViewGui extends JDialog implements UserView {
      * [cite_start]Equivalente a register() [cite: 182-185].
      */
     private void register() {
-        // Painel customizado para o JOptionPane
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
         JTextField usernameField = new JTextField(20);
         JPasswordField passwordField = new JPasswordField(20);
@@ -100,7 +96,7 @@ public final class UserViewGui extends JDialog implements UserView {
                 return;
             }
 
-            if (userController.usernameExists(name)) { // [cite: 183]
+            if (userController.usernameExists(name)) {
                 JOptionPane.showMessageDialog(this, "Usuário já existe!", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -115,7 +111,6 @@ public final class UserViewGui extends JDialog implements UserView {
      * [cite_start]Equivalente a login() [cite: 186-189].
      */
     private void login() {
-        // Reutiliza o mesmo layout do painel de registro
         JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
         JTextField usernameField = new JTextField(20);
         JPasswordField passwordField = new JPasswordField(20);
@@ -136,7 +131,7 @@ public final class UserViewGui extends JDialog implements UserView {
                 appController.setUser(u);
                 appController.notifyUserChange(u);
                 JOptionPane.showMessageDialog(this, "Login realizado! Bem-vindo, " + u.getUsername(), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                setVisible(false); // Fecha a janela de login após o sucesso
+                setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -152,10 +147,8 @@ public final class UserViewGui extends JDialog implements UserView {
         if (currentUser != null) {
             JOptionPane.showMessageDialog(this, "Usuário " + currentUser.getUsername() + " desconectado.", "Logout", JOptionPane.INFORMATION_MESSAGE);
             appController.setUser(null);
-            // A notificação (notifyUserChange) deve ser disparada pelo setUser(null) no AppController
-            updateStatus(); // Atualiza esta janela
+            updateStatus();
         } else {
-            // Este botão não deveria estar clicável se ninguém estiver logado, mas por segurança:
             JOptionPane.showMessageDialog(this, "Nenhum usuário logado.", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
     }

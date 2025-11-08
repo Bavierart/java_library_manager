@@ -16,11 +16,7 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Implementação da CategoryView usando Java Swing.
- * Substitui o menu de 10 opções  por uma interface
- * baseada em árvore (JTree).
- */
+
 public final class CategoryViewGui extends JDialog implements CategoryView {
 
     private final CategoryController categoryController = AppController.getController().categories();
@@ -38,27 +34,21 @@ public final class CategoryViewGui extends JDialog implements CategoryView {
         setModal(true);
         setLayout(new BorderLayout(10, 10));
 
-        // --- Árvore (Esquerda) ---
         rootNode = new DefaultMutableTreeNode("Categorias");
         treeModel = new DefaultTreeModel(rootNode);
         categoryTree = new JTree(treeModel);
         categoryTree.setRootVisible(true);
         JScrollPane treeScrollPane = new JScrollPane(categoryTree);
 
-        // --- Lista de Livros (Direita) ---
-        // Substitui "7) Listar livros da categoria" [cite: 37]
         bookListArea = new JTextArea();
         bookListArea.setEditable(false);
         bookListArea.setBorder(BorderFactory.createTitledBorder("Livros na Categoria"));
         JScrollPane bookScrollPane = new JScrollPane(bookListArea);
 
-        // --- Split Pane (Centro) ---
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeScrollPane, bookScrollPane);
         splitPane.setDividerLocation(300);
         add(splitPane, BorderLayout.CENTER);
 
-        // --- Painel de Botões (Sul) ---
-        // Agrupa as 10 opções de menu  em botões contextuais
         JPanel buttonPanel = new JPanel(new GridLayout(2, 4, 5, 5)); // 2 linhas de botões
 
         JButton refreshButton = new JButton("Listar/Atualizar"); // 1) e 10)
@@ -81,8 +71,6 @@ public final class CategoryViewGui extends JDialog implements CategoryView {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // --- Ações dos Botões ---
-        // [cite: 39-41]
         refreshButton.addActionListener(e -> populateTree());
         createButton.addActionListener(e -> createCategory());
         editButton.addActionListener(e -> editCategory());
@@ -92,9 +80,6 @@ public final class CategoryViewGui extends JDialog implements CategoryView {
         addSubCatButton.addActionListener(e -> addSubCategory());
         closeButton.addActionListener(e -> setVisible(false));
 
-        // --- Listener da Árvore ---
-        // Atualiza a lista de livros quando uma categoria é selecionada
-        // (Equivalente a "7) Listar livros da categoria" [cite: 40, 66-71])
         categoryTree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
@@ -110,20 +95,16 @@ public final class CategoryViewGui extends JDialog implements CategoryView {
     private void populateTree() {
         rootNode.removeAllChildren();
 
-        // Assumimos que listAll() retorna apenas categorias de nível superior
         List<Category> topLevelCategories = categoryController.listAll();
         if (topLevelCategories.isEmpty()) {
-            // Nenhum nó para adicionar
         } else {
             for (Category cat : topLevelCategories) {
                 DefaultMutableTreeNode catNode = new DefaultMutableTreeNode(cat);
                 rootNode.add(catNode);
-                // Recursivamente adiciona subcategorias
                 populateChildren(catNode, cat);
             }
         }
         treeModel.reload(rootNode);
-        // Expande a árvore para mostrar os primeiros níveis
         for (int i = 0; i < categoryTree.getRowCount(); i++) {
             categoryTree.expandRow(i);
         }
@@ -297,7 +278,7 @@ public final class CategoryViewGui extends JDialog implements CategoryView {
 
             boolean removed = categoryController.removeBookFromCategory(cat, book);
             JOptionPane.showMessageDialog(this, removed ? "Livro removido." : "Falha ao remover.");
-            listBooksOfSelectedCategory(); // Atualiza a lista de livros
+            listBooksOfSelectedCategory();
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ID inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -321,8 +302,7 @@ public final class CategoryViewGui extends JDialog implements CategoryView {
         if (name != null && !name.isBlank()) {
             boolean added = categoryController.addSubCategory(parent, name);
             JOptionPane.showMessageDialog(this, added ? "Subcategoria adicionada." : "Falha ao adicionar.");
-            populateTree(); // Atualiza a árvore
-            // Tenta re-selecionar o pai
+            populateTree();
             findAndSelectNode(parent);
         }
     }
@@ -362,9 +342,9 @@ public final class CategoryViewGui extends JDialog implements CategoryView {
     @Override
     public void setVisible(boolean visible) {
         if (visible) {
-            populateTree(); // [cite: 85]
+            populateTree();
             listBooksOfSelectedCategory();
         }
-        super.setVisible(visible); // [cite: 85]
+        super.setVisible(visible);
     }
 }
