@@ -4,6 +4,9 @@ import controller.AppController;
 import view.*;
 import view.cli.*;
 
+/**
+ * Fábrica para criar a interface de usuário no terminal.
+ */
 public final class TextUiFactory extends AbstractFactory{
 
     @Override
@@ -39,6 +42,8 @@ public final class TextUiFactory extends AbstractFactory{
         ReviewViewText rv = (ReviewViewText) createReviewView();
         ShelfViewText sv = (ShelfViewText) createShelfView();
         AppController ac = AppController.getController();
+
+        //registra observadores para usuário
         ac.registerObserver(rv);
         ac.registerObserver(sv);
         return new MainViewText(bv, cv, uv, rv, sv, ac);
