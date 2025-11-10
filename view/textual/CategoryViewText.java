@@ -1,4 +1,4 @@
-package view.cli;
+package view.textual;
 
 import controller.AppController;
 import controller.CategoryController;

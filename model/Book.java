@@ -14,6 +14,7 @@ public final class Book extends AbstractCrudObject implements Ranked {
     private final ArrayList<Review> reviews = new ArrayList<>();
     private final ArrayList<Category> categories = new ArrayList<>();
 
+    /** Class that represents the main (CRUD) object for the system**/
     private Book(int id, String name, Double price, String author, String publisher, Integer pages) {
         super(id);
         setName(name);
@@ -27,7 +28,7 @@ public final class Book extends AbstractCrudObject implements Ranked {
         return categories;
     }
 
-    // -------- Builder Pattern --------
+    /**Builds a Book object**/
     public static class Builder {
         private String name = "Sem nome";
         private Double price = 0d;
@@ -136,7 +137,6 @@ public final class Book extends AbstractCrudObject implements Ranked {
         return reviews.stream().mapToDouble(Review::getScore).average().orElse(0);
     }
 
-    // -------- toString --------
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

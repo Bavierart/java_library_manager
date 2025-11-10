@@ -1,6 +1,5 @@
 package controller;
 
-import model.DataManager;
 import model.User;
 
 import java.util.ArrayList;

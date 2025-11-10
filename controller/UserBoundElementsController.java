@@ -1,7 +1,6 @@
 package controller;
 
 import model.CrudObjectInterface;
-import model.DataManager;
 import model.User;
 
 public abstract class UserBoundElementsController<T extends CrudObjectInterface> implements Controller<T> {

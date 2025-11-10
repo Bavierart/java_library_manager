@@ -2,7 +2,7 @@ package view.factory;
 
 import controller.AppController;
 import view.*;
-import view.cli.*;
+import view.textual.*;
 
 /**
  * Fábrica para criar a interface de usuário no terminal.

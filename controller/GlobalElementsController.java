@@ -1,8 +1,7 @@
 package controller;
 
-import model.Category;
 import model.CrudObjectInterface;
-import model.DataManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
