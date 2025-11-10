@@ -1,8 +1,9 @@
 package view.factory;
 
 import controller.AppController;
+import view.*;
 
-public abstract class AbstractFactory implements UiFactory {
+public abstract class AbstractFactory {
 
     private final AppController controller = AppController.getController();
 
@@ -10,4 +11,11 @@ public abstract class AbstractFactory implements UiFactory {
     public AppController getController() {
         return controller;
     }
+
+    public abstract BookView createBookView();
+    public abstract ShelfView createShelfView();
+    public abstract CategoryView createCategoryView();
+    public abstract ReviewView createReviewView();
+    public abstract MainView createMainView();
+    public abstract UserView createUserView();
 }
