@@ -12,12 +12,12 @@ public final class UserController extends GlobalElementsController<User> {
     @Override
     public void saveAll() {
         // 2. Salve a LISTA de usuários que está DENTRO do crudAux.
-        DataManager.save(crudAux.getAllObjects(), "users.dat");
+        DataManager.save(crudAux.getAllObjects(), "data/users.dat");
     }
 
     @Override
     public void loadAll() {
-        ArrayList<User> loadedList = DataManager.load("users.dat");
+        ArrayList<User> loadedList = DataManager.load("data/users.dat");
 
         if (loadedList == null) {
             loadedList = new ArrayList<>();

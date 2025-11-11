@@ -13,8 +13,7 @@ public final class User implements Serializable, CrudObjectInterface {
     private final ArrayList<Shelf> shelves = new ArrayList<>();
 
     private User(int id, String username, String password) {
-        this.id = id;
-        setUsername(username);
+        this.id = id;        setUsername(username);
         setPassword(password);
     }
 
